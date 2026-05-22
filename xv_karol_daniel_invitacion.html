@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blush:#f5d6d0;
+  --blush-light:#fdf0ed;
+  --blush-mid:#e8b5aa;
+  --blush-deep:#c8897a;
+  --blush-dark:#9e5a4d;
+  --gold:#c9a96e;
+  --gold-light:#e8d5b0;
+  --cream:#fdf8f5;
+  --text-dark:#3d2a27;
+  --text-mid:#6b4a45;
+  --text-light:#9e7a74;
+}
+html,body{
+  width:100%;
+  background:#fff;
+  font-family:'Jost',sans-serif;
+  color:var(--text-dark);
+  overflow-x:hidden;
+}
+.invite-wrap{
+  max-width:430px;
+  margin:0 auto;
+  background:var(--cream);
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+}
+
+/* ── ANIMATED BG PETALS ── */
+.bg-petal{position:absolute;border-radius:50% 20% 50% 20%;opacity:0.13;animation:float 8s ease-in-out infinite;}
+.bp1{width:180px;height:180px;background:var(--blush-mid);top:-40px;right:-50px;animation-delay:0s;}
+.bp2{width:120px;height:120px;background:var(--gold);top:30%;left:-40px;animation-delay:2s;}
+.bp3{width:90px;height:90px;background:var(--blush-deep);top:60%;right:-20px;animation-delay:4s;}
+.bp4{width:150px;height:150px;background:var(--blush);bottom:10%;left:-30px;animation-delay:1s;}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-18px) rotate(8deg)}}
+
+/* ── SECTION BASE ── */
+.section{
+  position:relative;
+  padding:0 24px;
+  opacity:0;
+  transform:translateY(30px);
+  transition:opacity 0.7s ease, transform 0.7s ease;
+}
+.section.visible{opacity:1;transform:translateY(0)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px 24px;
+  position:relative;
+}
+.hero-badge{
+  font-family:'Jost',sans-serif;
+  font-weight:200;
+  font-size:11px;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:24px;
+  opacity:0;
+  animation:fadeUp 1s 0.3s forwards;
+}
+.hero-roman{
+  font-family:'Cormorant Garamond',serif;
+  font-size:72px;
+  font-weight:300;
+  color:var(--blush-deep);
+  line-height:1;
+  margin-bottom:4px;
+  opacity:0;
+  animation:fadeUp 1s 0.5s forwards;
+}
+.hero-años{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;
+  font-weight:300;
+  letter-spacing:8px;
+  color:var(--text-mid);
+  text-transform:uppercase;
+  margin-bottom:32px;
+  opacity:0;
+  animation:fadeUp 1s 0.7s forwards;
+}
+.hero-divider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:32px;
+  opacity:0;
+  animation:fadeUp 1s 0.9s forwards;
+}
+.hero-divider-line{width:60px;height:0.5px;background:var(--gold);}
+.hero-divider-diamond{
+  width:6px;height:6px;
+  background:var(--gold);
+  transform:rotate(45deg);
+}
+.hero-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:42px;
+  font-weight:300;
+  font-style:italic;
+  color:var(--text-dark);
+  line-height:1.2;
+  margin-bottom:8px;
+  opacity:0;
+  animation:fadeUp 1s 1.1s forwards;
+}
+.hero-subtitle{
+  font-family:'Jost',sans-serif;
+  font-weight:200;
+  font-size:12px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--text-light);
+  margin-bottom:48px;
+  opacity:0;
+  animation:fadeUp 1s 1.3s forwards;
+}
+.hero-date-pill{
+  background:rgba(245,214,208,0.5);
+  border:0.5px solid var(--blush-mid);
+  border-radius:50px;
+  padding:12px 28px;
+  opacity:0;
+  animation:fadeUp 1s 1.5s forwards;
+}
+.hero-date-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;
+  font-weight:400;
+  color:var(--text-dark);
+  letter-spacing:1px;
+}
+.scroll-hint{
+  position:absolute;
+  bottom:32px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  opacity:0;
+  animation:fadeUp 1s 2s forwards;
+}
+.scroll-dot{
+  width:1px;
+  height:40px;
+  background:linear-gradient(to bottom, transparent, var(--gold));
+  animation:scrollLine 2s ease-in-out infinite;
+}
+.scroll-label{
+  font-size:9px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--text-light);
+}
+@keyframes scrollLine{0%,100%{opacity:0.4;height:20px}50%{opacity:1;height:40px}}
+
+/* ── DIVIDER ORNAMENT ── */
+.ornament{
+  text-align:center;
+  padding:32px 0;
+  color:var(--gold);
+  font-size:18px;
+}
+.ornament-line{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:0 24px;
+}
+.orn-bar{flex:1;height:0.5px;background:linear-gradient(to right, transparent, var(--gold-light));}
+.orn-bar.right{background:linear-gradient(to left, transparent, var(--gold-light));}
+.orn-diamond{
+  width:8px;height:8px;
+  background:var(--blush-mid);
+  border:1px solid var(--gold);
+  transform:rotate(45deg);
+  flex-shrink:0;
+}
+
+/* ── CARD ── */
+.card{
+  background:white;
+  border-radius:20px;
+  border:0.5px solid var(--blush-mid);
+  padding:28px 24px;
+  margin:0 0 16px;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg, var(--blush), var(--gold-light), var(--blush-mid));
+}
+.card-label{
+  font-size:9px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--blush-deep);
+  margin-bottom:16px;
+  font-weight:300;
+}
+.card-icon{
+  width:40px;height:40px;
+  background:var(--blush-light);
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:16px;
+  font-size:18px;
+}
+
+/* ── SCHEDULE ── */
+.schedule-item{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+  padding:16px 0;
+  border-bottom:0.5px solid var(--blush-light);
+}
+.schedule-item:last-child{border-bottom:none}
+.schedule-time-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  min-width:52px;
+}
+.schedule-time{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;
+  font-weight:400;
+  color:var(--blush-deep);
+  line-height:1;
+}
+.schedule-ampm{
+  font-size:9px;
+  letter-spacing:1px;
+  color:var(--text-light);
+  text-transform:uppercase;
+}
+.schedule-dot{
+  width:8px;height:8px;
+  background:var(--blush-mid);
+  border:2px solid white;
+  outline:1px solid var(--blush-mid);
+  border-radius:50%;
+  margin-top:8px;
+}
+.schedule-info{flex:1}
+.schedule-event{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;
+  font-weight:400;
+  color:var(--text-dark);
+  margin-bottom:2px;
+}
+.schedule-place{
+  font-size:12px;
+  color:var(--text-light);
+  font-weight:300;
+}
+
+/* ── COUNTDOWN ── */
+.countdown-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:8px;
+}
+.cd-box{
+  background:var(--blush-light);
+  border-radius:14px;
+  padding:14px 4px;
+  text-align:center;
+  border:0.5px solid var(--blush);
+}
+.cd-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:30px;
+  font-weight:600;
+  color:var(--blush-dark);
+  line-height:1;
+  display:block;
+}
+.cd-label{
+  font-size:8px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--text-light);
+  margin-top:4px;
+  display:block;
+}
+
+/* ── PADRINOS ── */
+.padrino-item{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 0;
+  border-bottom:0.5px solid var(--blush-light);
+}
+.padrino-item:last-child{border-bottom:none}
+.padrino-avatar{
+  width:42px;height:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--blush), var(--blush-mid));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:14px;
+  color:white;
+  font-style:italic;
+  flex-shrink:0;
+}
+.padrino-names{
+  font-family:'Cormorant Garamond',serif;
+  font-size:17px;
+  font-weight:400;
+  color:var(--text-dark);
+  line-height:1.2;
+}
+.padrino-role{
+  font-size:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--text-light);
+  font-weight:300;
+  margin-top:2px;
+}
+
+/* ── MAP PLACEHOLDER ── */
+.map-placeholder{
+  background:var(--blush-light);
+  border-radius:14px;
+  border:0.5px solid var(--blush);
+  padding:28px;
+  text-align:center;
+  margin-bottom:12px;
+}
+.map-pin-icon{font-size:32px;margin-bottom:8px;}
+.map-venue-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;
+  color:var(--text-dark);
+  margin-bottom:4px;
+}
+.map-address{
+  font-size:12px;
+  color:var(--text-light);
+  font-weight:300;
+  line-height:1.6;
+}
+.map-btn{
+  display:block;
+  margin-top:16px;
+  background:var(--blush-deep);
+  color:white;
+  border-radius:50px;
+  padding:12px 24px;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  text-decoration:none;
+  font-weight:300;
+  cursor:pointer;
+  border:none;
+  width:100%;
+  font-family:'Jost',sans-serif;
+  transition:background 0.2s, transform 0.15s;
+}
+.map-btn:active{transform:scale(0.97);background:var(--blush-dark)}
+.map-btn2{
+  display:block;
+  margin-top:10px;
+  background:white;
+  color:var(--blush-deep);
+  border-radius:50px;
+  padding:12px 24px;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  text-decoration:none;
+  font-weight:300;
+  cursor:pointer;
+  border:0.5px solid var(--blush-mid);
+  width:100%;
+  font-family:'Jost',sans-serif;
+  transition:background 0.2s, transform 0.15s;
+}
+.map-btn2:active{transform:scale(0.97)}
+
+/* ── FOOTER ── */
+.footer{
+  text-align:center;
+  padding:40px 24px 60px;
+}
+.footer-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;
+  font-style:italic;
+  font-weight:300;
+  color:var(--blush-deep);
+  margin-bottom:8px;
+}
+.footer-msg{
+  font-size:12px;
+  letter-spacing:1px;
+  color:var(--text-light);
+  font-weight:300;
+  line-height:1.8;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION TITLE ── */
+.sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;
+  font-weight:300;
+  font-style:italic;
+  color:var(--text-dark);
+  margin-bottom:6px;
+}
+.sec-sub{
+  font-size:10px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--blush-deep);
+  margin-bottom:20px;
+  font-weight:300;
+}
+</style>
+</head>
+<body>
+<div class="invite-wrap">
+
+  <div class="bg-petal bp1"></div>
+  <div class="bg-petal bp2"></div>
+  <div class="bg-petal bp3"></div>
+  <div class="bg-petal bp4"></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Con la bendición de Dios y de mis padres</div>
+    <div class="hero-roman">XV</div>
+    <div class="hero-años">Años</div>
+    <div class="hero-divider">
+      <div class="hero-divider-line"></div>
+      <div class="hero-divider-diamond"></div>
+      <div class="hero-divider-line"></div>
+    </div>
+    <div class="hero-name">Karol Daniel<br>Torres González</div>
+    <div class="hero-subtitle">Me complace invitarte a celebrar</div>
+    <div class="hero-date-pill">
+      <div class="hero-date-text">Sábado · 11 de Julio de 2026</div>
+    </div>
+    <div class="scroll-hint">
+      <div class="scroll-dot"></div>
+      <div class="scroll-label">Desliza</div>
+    </div>
+  </div>
+
+  <!-- HORARIO -->
+  <div class="ornament-line"><div class="orn-bar"></div><div class="orn-diamond"></div><div class="orn-bar right"></div></div>
+  <div class="section" data-scroll>
+    <div style="padding-top:32px; padding-bottom:8px">
+      <div class="sec-title">El Programa</div>
+      <div class="sec-sub">Un día muy especial</div>
+    </div>
+    <div class="card">
+      <div class="schedule-item">
+        <div class="schedule-time-wrap">
+          <div class="schedule-time">1:00</div>
+          <div class="schedule-ampm">p.m.</div>
+          <div class="schedule-dot"></div>
+        </div>
+        <div class="schedule-info">
+          <div class="schedule-event">Santa Misa</div>
+          <div class="schedule-place">Parroquia San Mateo Atenco</div>
+        </div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time-wrap">
+          <div class="schedule-time">3:00</div>
+          <div class="schedule-ampm">p.m.</div>
+          <div class="schedule-dot"></div>
+        </div>
+        <div class="schedule-info">
+          <div class="schedule-event">Recepción y Fiesta</div>
+          <div class="schedule-place">Salón Sante</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="section" data-scroll style="padding-top:24px">
+    <div class="sec-title">Cuenta Regresiva</div>
+    <div class="sec-sub">Faltan solo...</div>
+    <div class="card">
+      <div class="countdown-grid">
+        <div class="cd-box"><span class="cd-num" id="cd-d">--</span><span class="cd-label">Días</span></div>
+        <div class="cd-box"><span class="cd-num" id="cd-h">--</span><span class="cd-label">Horas</span></div>
+        <div class="cd-box"><span class="cd-num" id="cd-m">--</span><span class="cd-label">Min</span></div>
+        <div class="cd-box"><span class="cd-num" id="cd-s">--</span><span class="cd-label">Seg</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PADRINOS -->
+  <div class="ornament-line" style="margin-top:16px"><div class="orn-bar"></div><div class="orn-diamond"></div><div class="orn-bar right"></div></div>
+  <div class="section" data-scroll style="padding-top:32px">
+    <div class="sec-title">Mis Padrinos</div>
+    <div class="sec-sub">Con todo su amor y generosidad</div>
+    <div class="card">
+      <div class="padrino-item">
+        <div class="padrino-avatar">A&M</div>
+        <div>
+          <div class="padrino-names">Apolinar y Magdalena<br>Morales González</div>
+          <div class="padrino-role">Padrinos de Honor</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UBICACIÓN -->
+  <div class="section" data-scroll style="padding-top:24px; padding-bottom:16px">
+    <div class="sec-title">Ubicación</div>
+    <div class="sec-sub">Te esperamos aquí</div>
+    <div class="map-placeholder">
+      <div class="map-pin-icon">📍</div>
+      <div class="map-venue-name">Parroquia San Mateo</div>
+      <div class="map-address">San Mateo Atenco, Estado de México<br>Misa · 1:00 p.m.</div>
+    </div>
+    <div class="map-placeholder" style="margin-top:10px">
+      <div class="map-pin-icon">🌸</div>
+      <div class="map-venue-name">Salón Sante</div>
+      <div class="map-address">San Mateo Atenco, Estado de México<br>Recepción · 3:00 p.m.</div>
+    </div>
+    <button class="map-btn" onclick="openLink('https://maps.google.com/?q=Parroquia+San+Mateo+Atenco')">Ver en Google Maps — Misa</button>
+    <button class="map-btn2" onclick="openLink('https://maps.google.com/?q=Salon+Sante+San+Mateo+Atenco')">Ver en Google Maps — Salón</button>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="ornament-line" style="margin-top:8px"><div class="orn-bar"></div><div class="orn-diamond"></div><div class="orn-bar right"></div></div>
+  <div class="footer">
+    <div class="footer-name">Karol Daniel</div>
+    <div class="footer-msg">Tu presencia es el mejor regalo.<br>Con cariño te esperamos para<br>compartir este momento tan especial.</div>
+    <div style="margin-top:24px; color:var(--gold); font-size:20px; letter-spacing:8px;">· · ·</div>
+    <div style="margin-top:16px; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--blush-mid);">11 · 07 · 2026</div>
+  </div>
+
+</div>
+
+<script>
+function openLink(url){window.open(url,'_blank')}
+
+function updateCountdown(){
+  const target=new Date('2026-07-11T13:00:00');
+  const now=new Date();
+  const diff=target-now;
+  if(diff<=0){
+    ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>document.getElementById(id).textContent='0');
+    return;
+  }
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor((diff%86400000)/3600000);
+  const m=Math.floor((diff%3600000)/60000);
+  const s=Math.floor((diff%60000)/1000);
+  document.getElementById('cd-d').textContent=String(d);
+  document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
+  });
+},{threshold:0.15});
+document.querySelectorAll('[data-scroll]').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
